@@ -158,6 +158,7 @@
         <extensions>true</extensions>
         <configuration>
           <publishingServerId>central</publishingServerId>
+	  <skipPublishing>${maven.deploy.skip}</skipPublishing>
         </configuration>
       </plugin>
       <plugin>

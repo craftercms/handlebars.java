@@ -14,6 +14,10 @@
   <name>Handlebars.js maven plugin tests</name>
   <description>Tests suite for handlebars-maven-plugin</description>
 
+  <properties>
+    <maven.deploy.skip>true</maven.deploy.skip>
+  </properties>
+
   <build>
     <plugins>
       <plugin>
