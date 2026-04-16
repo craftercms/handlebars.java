@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.craftercms</groupId>
   <artifactId>handlebars.java</artifactId>
-  <version>4.6.0-SNAPSHOT</version>
+  <version>4.6.0</version>
   <packaging>pom</packaging>
 
   <name>Handlebars.java</name>
@@ -54,6 +54,7 @@
     <connection>scm:git:https://github.com/craftercms/handlebars.java</connection>
     <developerConnection>scm:git:https://github.com/craftercms/handlebars.java</developerConnection>
     <url>https://github.com/craftercms/handlebars.java</url>
+    <tag>handlebars.java-4.6.0</tag>
   </scm>
 
   <dependencyManagement>
@@ -235,8 +236,8 @@
                 <include>*.java</include>
               </includes>
               <!-- define the steps to apply to those files -->
-              <trimTrailingWhitespace/>
-              <endWithNewline/>
+              <trimTrailingWhitespace />
+              <endWithNewline />
             </format>
           </formats>
           <java>
@@ -345,7 +346,7 @@
                 <phase>initialize</phase>
                 <configuration>
                   <target>
-                    <chmod file="${pre-commit-hook}" perm="755"/>
+                    <chmod file="${pre-commit-hook}" perm="755" />
                   </target>
                 </configuration>
                 <goals>
@@ -444,8 +445,8 @@
                 <configuration>
                   <target>
                     <property name="input" value="src${file.separator}main${file.separator}java${file.separator}module-info.java" />
-                    <copy file="${input}" tofile="${module-info.shade}"/>
-                    <replaceregexp file="${module-info.shade}" match="(// SHADED:).*" flags="s"  replace="}" />
+                    <copy file="${input}" tofile="${module-info.shade}" />
+                    <replaceregexp file="${module-info.shade}" match="(// SHADED:).*" flags="s" replace="}" />
                   </target>
                 </configuration>
                 <goals>
