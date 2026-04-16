@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.github.jknack</groupId>
+  <groupId>org.craftercms</groupId>
   <artifactId>handlebars.java</artifactId>
-  <version>4.4.1-SNAPSHOT</version>
+  <version>4.6.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>Handlebars.java</name>
@@ -31,32 +31,42 @@
     </license>
   </licenses>
 
+
   <developers>
     <developer>
-      <id>jknack</id>
-      <name>Edgar Espina</name>
-      <url>https://github.com/jknack</url>
+      <id>sumerjabri</id>
+      <name>Sumer Jabri</name>
+      <email>sumer.jabri@craftercms.org</email>
+    </developer>
+    <developer>
+      <id>phuongnq</id>
+      <name>Phil Nguyen</name>
+      <email>phil.nguyen@craftercms.com</email>
+    </developer>
+    <developer>
+      <id>jmendeza</id>
+      <name>Jonathan Mendez</name>
+      <email>jonathan.mendez@craftercms.org</email>
     </developer>
   </developers>
 
   <scm>
-    <connection>scm:git:git@github.com:jknack/handlebars.java.git</connection>
-    <developerConnection>scm:git:git@github.com:jknack/handlebars.java.git</developerConnection>
-    <url>scm:git:git@github.com:jknack/handlebars.java.git</url>
-    <tag>HEAD</tag>
+    <connection>scm:git:git://github.com/craftercms/handlebars.java</connection>
+    <developerConnection>scm:git:git://github.com/craftercms/handlebars.java</developerConnection>
+    <url>scm:git:git://github.com/craftercms/handlebars.java</url>
   </scm>
 
   <distributionManagement>
     <snapshotRepository>
-      <id>ossrh</id>
-      <name>Sonatype Nexus Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <id>central</id>
+      <name>Maven Central Snapshots</name>
+      <url>https://central.sonatype.com/repository/maven-snapshots/</url>
     </snapshotRepository>
     <repository>
-			<id>github</id>
-			<name>GitHub Maven Packages</name>
-			<url>https://maven.pkg.github.com/craftercms/craftercms</url>
-		</repository>
+      <id>github</id>
+      <name>GitHub Maven Packages</name>
+      <url>https://maven.pkg.github.com/craftercms/craftercms</url>
+    </repository>
   </distributionManagement>
 
   <dependencyManagement>
@@ -64,13 +74,13 @@
       <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
-        <version>3.17.0</version>
+        <version>3.18.0</version>
       </dependency>
 
       <dependency>
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-text</artifactId>
-        <version>1.13.0</version>
+        <version>1.14.0</version>
       </dependency>
 
       <dependency>
@@ -214,7 +224,7 @@
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
-        <version>2.44.4</version>
+        <version>2.46.1</version>
         <configuration>
           <upToDateChecking>
             <enabled>true</enabled>
@@ -290,7 +300,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>exec-maven-plugin</artifactId>
-            <version>3.5.0</version>
+            <version>3.5.1</version>
             <executions>
               <execution>
                 <phase>initialize</phase>
@@ -411,16 +421,14 @@
             </executions>
           </plugin>
 
-          <!-- Deploy plugin -->
           <plugin>
-            <groupId>org.sonatype.plugins</groupId>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
-            <version>1.7.0</version>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>0.8.0</version>
             <extensions>true</extensions>
             <configuration>
-              <serverId>ossrh</serverId>
-              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-              <autoReleaseAfterClose>true</autoReleaseAfterClose>
+              <publishingServerId>central</publishingServerId>
+              <autoPublish>true</autoPublish>
             </configuration>
           </plugin>
         </plugins>
@@ -494,11 +502,11 @@
   <properties>
     <!-- Encoding UTF-8 -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jackson2-version>2.18.3</jackson2-version>
-    <spring.version>6.2.5</spring.version>
-    <jacoco.version>0.8.13</jacoco.version>
-    <antlr-version>4.13.2</antlr-version>
-    <mockito.version>5.17.0</mockito.version>
+    <jackson2-version>2.19.2</jackson2-version>
+    <spring.version>6.2.9</spring.version>
+    <jacoco.version>0.8.12</jacoco.version>
+    <antlr-version>4.13.1</antlr-version>
+    <mockito.version>5.18.0</mockito.version>
     <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ssa</maven.build.timestamp.format>
     <maven-antrun-plugin.version>3.1.0</maven-antrun-plugin.version>
     <timestamp>${maven.build.timestamp}</timestamp>
@@ -508,6 +516,6 @@
     <maven.javadoc.failOnError>false</maven.javadoc.failOnError>
     <pre-commit-hook>src${file.separator}etc${file.separator}formatter.sh</pre-commit-hook>
     <mustache-specs>handlebars${file.separator}src${file.separator}test${file.separator}resources${file.separator}mustache</mustache-specs>
-    <junit.version>5.12.1</junit.version>
+    <junit.version>5.13.4</junit.version>
   </properties>
 </project>

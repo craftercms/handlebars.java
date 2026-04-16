@@ -3,9 +3,9 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <parent>
-    <groupId>com.github.jknack</groupId>
+    <groupId>org.craftercms</groupId>
     <artifactId>handlebars.java</artifactId>
-    <version>4.4.1-SNAPSHOT</version>
+    <version>4.6.0-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -13,19 +13,19 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.github.jknack</groupId>
+      <groupId>org.craftercms</groupId>
       <artifactId>handlebars-guava-cache</artifactId>
       <version>${project.version}</version>
     </dependency>
 
     <dependency>
-      <groupId>com.github.jknack</groupId>
+      <groupId>org.craftercms</groupId>
       <artifactId>handlebars-helpers</artifactId>
       <version>${project.version}</version>
     </dependency>
 
     <dependency>
-      <groupId>com.github.jknack</groupId>
+      <groupId>org.craftercms</groupId>
       <artifactId>handlebars-jackson</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -38,7 +38,7 @@
 
     <!-- Test dependencies -->
     <dependency>
-      <groupId>com.github.jknack</groupId>
+      <groupId>org.craftercms</groupId>
       <artifactId>handlebars</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>

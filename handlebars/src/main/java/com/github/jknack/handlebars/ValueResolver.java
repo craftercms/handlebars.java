@@ -5,9 +5,6 @@
  */
 package com.github.jknack.handlebars;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.unmodifiableList;
-
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -39,7 +36,7 @@ public interface ValueResolver {
   Object resolve(Object context, String name);
 
   /**
-   * Resolve the the context object by optionally converting the value if necessary. If a {@link
+   * Resolve the context object by optionally converting the value if necessary. If a {@link
    * #UNRESOLVED} is returned, the {@link Context context stack} will continue with the next value
    * resolver in the chain.
    *
@@ -66,13 +63,7 @@ public interface ValueResolver {
    * @return Immutable list of value resolvers.
    */
   static List<ValueResolver> defaultValueResolvers() {
-    if (Handlebars.Utils.javaVersion14) {
-      return unmodifiableList(
-          asList(
-              MapValueResolver.INSTANCE,
-              JavaBeanValueResolver.INSTANCE,
-              MethodValueResolver.INSTANCE));
-    }
-    return unmodifiableList(asList(MapValueResolver.INSTANCE, JavaBeanValueResolver.INSTANCE));
+    return List.of(
+        MapValueResolver.INSTANCE, JavaBeanValueResolver.INSTANCE, MethodValueResolver.INSTANCE);
   }
 }

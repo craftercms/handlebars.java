@@ -157,18 +157,6 @@ public class Handlebars implements HelperRegistry {
    */
   public static class Utils {
 
-    /** Java 14. */
-    private static final int JAVA_14 = 14;
-
-    /** Current Java version: 8, 11, 15, etc. */
-    public static final int javaVersion = javaVersion();
-
-    /** True when running on Java 14 or higher. */
-    public static final boolean javaVersion14 = javaVersion() >= JAVA_14;
-
-    /** Prefix for Java version: 1.8 (mostly). */
-    private static final String VERSION_PREFIX = "1.";
-
     /**
      * Evaluate the given object and return true is the object is considered empty. Nulls, empty
      * list or array and false values are considered empty.
@@ -179,6 +167,21 @@ public class Handlebars implements HelperRegistry {
      */
     @SuppressWarnings("rawtypes")
     public static boolean isEmpty(final Object value) {
+      return isEmpty(value, false);
+    }
+
+    /**
+     * Evaluate the given object and return true is the object is considered empty. Nulls, empty
+     * list or array and false values are considered empty. If includeZero is false, zero values are
+     * considered empty.
+     *
+     * @param value The object value.
+     * @param includeZero If true, zero values are considered empty.
+     * @return Return true is the object is considered empty. Nulls, empty list or array and false
+     *     values are considered empty.
+     */
+    @SuppressWarnings("rawtypes")
+    public static boolean isEmpty(final Object value, Boolean includeZero) {
       if (value == null) {
         return true;
       }
@@ -197,7 +200,7 @@ public class Handlebars implements HelperRegistry {
       if (value.getClass().isArray()) {
         return Array.getLength(value) == 0;
       }
-      if (value instanceof Number) {
+      if (!includeZero && value instanceof Number) {
         return ((Number) value).doubleValue() == 0;
       }
       return false;
@@ -219,11 +222,6 @@ public class Handlebars implements HelperRegistry {
      */
     public static CharSequence escapeExpression(final CharSequence input) {
       return EscapingStrategy.DEF.escape(input);
-    }
-
-    static int javaVersion() {
-      String version = System.getProperty("java.specification.version").trim();
-      return Integer.parseInt(version.replace(VERSION_PREFIX, ""));
     }
 
     /**
@@ -326,7 +324,7 @@ public class Handlebars implements HelperRegistry {
   private String endDelimiter = DELIM_END;
 
   /** Location of the handlebars.js file. */
-  private String handlebarsJsFile = "/handlebars-v4.7.8.js";
+  private String handlebarsJsFile = "/handlebars-v4.7.9.js";
 
   /** List of formatters. */
   private List<Formatter> formatters = new ArrayList<>();
@@ -1452,7 +1450,11 @@ public class Handlebars implements HelperRegistry {
 
         this.engine = new ScriptEngineManager().getEngineByName("nashorn");
 
-        Throwing.run(() -> engine.eval(Files.read(this.handlebarsJsFile, charset)));
+        Throwing.run(() -> {
+          //polyfill globalThis as it is used in handlebars 4.7.9 and is not supported by nashorn
+          engine.eval("var globalThis = this;");
+          engine.eval(Files.read(this.handlebarsJsFile, charset));
+        });
       }
       return this.engine;
     }
