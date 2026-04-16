@@ -51,9 +51,9 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git://github.com/craftercms/handlebars.java</connection>
-    <developerConnection>scm:git:git://github.com/craftercms/handlebars.java</developerConnection>
-    <url>scm:git:git://github.com/craftercms/handlebars.java</url>
+    <connection>scm:git:https://github.com/craftercms/handlebars.java</connection>
+    <developerConnection>scm:git:https://github.com/craftercms/handlebars.java</developerConnection>
+    <url>https://github.com/craftercms/handlebars.java</url>
   </scm>
 
   <distributionManagement>
