@@ -64,8 +64,8 @@
     </snapshotRepository>
     <repository>
       <id>central-releases</id>
-      <name>GitHub Maven Packages</name>
-      <url>https://maven.pkg.github.com/craftercms/craftercms</url>
+      <name>Maven Central</name>
+      <url>https://central.sonatype.com/api/v1/publisher</url>
     </repository>
   </distributionManagement>
 
