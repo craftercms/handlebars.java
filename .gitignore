@@ -17,6 +17,7 @@ dependency-reduced-pom.xml
 # IntelliJ IDE Project Files #
 *.iml
 *.idea
+.vscode
 
 *.versionsBackup
 pom.xml.versionsBackup
