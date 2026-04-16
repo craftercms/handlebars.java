@@ -30,7 +30,7 @@ public class Issue234 {
     plugin.addTemplate("c");
     plugin.setAmd(true);
     plugin.setProject(newProject());
-    plugin.setHandlebarsJsFile("/handlebars-v4.7.8.js");
+    plugin.setHandlebarsJsFile("/handlebars-v4.7.9.js");
 
     plugin.execute();
 
