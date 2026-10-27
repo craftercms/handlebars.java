@@ -67,11 +67,10 @@ class Variable extends HelperResolver {
   /** Block params. */
   private static final List<String> BPARAMS = Collections.emptyList();
 
-  /** True, when no param/hash. */
-  private boolean noArg;
-
   /** Empty var. */
   private Template emptyVar;
+
+  private final String source;
 
   /**
    * Creates a new {@link Variable}.
@@ -87,7 +86,8 @@ class Variable extends HelperResolver {
       final String name,
       final TagType type,
       final List<Param> params,
-      final Map<String, Param> hash) {
+      final Map<String, Param> hash,
+      final String source) {
     super(handlebars);
     this.name = name.trim();
     this.path = PathCompiler.compile(name, handlebars.parentScopeResolution());
@@ -98,7 +98,7 @@ class Variable extends HelperResolver {
     this.escapingStrategy =
         type == TagType.VAR ? handlebars.getEscapingStrategy() : EscapingStrategy.NOOP;
     this.formatter = handlebars.getFormatter();
-    this.noArg = params.size() == 0 && hash.size() == 0;
+    this.source = source;
     postInit();
   }
 
@@ -135,8 +135,16 @@ class Variable extends HelperResolver {
    */
   @SuppressWarnings("unchecked")
   public Object value(final Context scope, final Writer writer) throws IOException {
-    boolean blockParam = scope.isBlockParams() && noArg;
-    if (helper != null && !blockParam) {
+    if (scope.isBlockParams() && path.size() == 1) {
+      // we are against a block parameter, only simple name are supported (size=1)
+      var blockValue = scope.get(path);
+      // block parameter takes precedence over helper name, if it is there return it
+      if (blockValue != null) {
+        return blockValue;
+      }
+    }
+    // helper with or without arguments always win against property value.
+    if (helper != null) {
       Options options =
           new Options(
               handlebars,
@@ -229,17 +237,7 @@ class Variable extends HelperResolver {
 
   @Override
   public String text() {
-    StringBuilder buffer = new StringBuilder();
-    buffer.append(startDelimiter).append(suffix()).append(name);
-    String params = paramsToString(this.params);
-    if (params.length() > 0) {
-      buffer.append(" ").append(params);
-    }
-    String hash = hashToString();
-    if (hash.length() > 0) {
-      buffer.append(" ").append(hash);
-    }
-    return buffer.append(endDelimiter).toString();
+    return source;
   }
 
   /**

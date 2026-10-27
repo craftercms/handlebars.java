@@ -119,6 +119,11 @@
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
         <version>6.0.0</version>
+        <configuration>
+          <instructions>
+            <Import-Package>jakarta.servlet;resolution:=optional,*</Import-Package>
+          </instructions>
+        </configuration>
         <executions>
           <execution>
             <id>bundle-manifest</id>
@@ -199,8 +204,7 @@
 
     <dependency>
       <groupId>org.junit.platform</groupId>
-      <artifactId>junit-platform-suite</artifactId>
-      <version>1.13.4</version>
+      <artifactId>junit-platform-suite-api</artifactId>
       <scope>test</scope>
     </dependency>
 
@@ -237,7 +241,7 @@
   </dependencies>
 
   <properties>
-    <nashorn.version>15.6</nashorn.version>
+    <nashorn.version>15.7</nashorn.version>
   </properties>
 
   <profiles>
