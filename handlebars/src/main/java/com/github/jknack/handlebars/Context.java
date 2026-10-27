@@ -128,6 +128,8 @@ public class Context {
    */
   private static class PartialCtx extends Context {
 
+    private final Map<String, Object> hash;
+
     /**
      * Creates a new partial context.
      *
@@ -137,6 +139,7 @@ public class Context {
      */
     protected PartialCtx(final Context parent, final Object model, final Map<String, Object> hash) {
       super(model);
+      this.hash = hash;
       this.extendedContext = new Context(hash);
       this.extendedContext.resolver = parent.resolver;
       this.extendedContext.extendedContext = new Context(Collections.emptyMap());
@@ -727,7 +730,23 @@ public class Context {
    */
   public static Context newPartialContext(
       final Context ctx, final String scope, final Map<String, Object> hash) {
-    return new PartialCtx(ctx, ctx.get(scope), hash);
+    var currentModel = ctx.model;
+    var scopedModel = ctx.get(scope);
+    // don't introduce a new scope when there is no need
+    var parent = ctx.parent != null && currentModel == scopedModel ? ctx.parent : ctx;
+    Map<String, Object> finalHash;
+    if (ctx instanceof PartialCtx) {
+      // propagate hash arguments down
+      finalHash = new HashMap<>(((PartialCtx) ctx).hash);
+      finalHash.putAll(hash);
+    } else {
+      finalHash = new HashMap<>(hash);
+      if (ctx.extendedContext != null && ctx.extendedContext.model instanceof Map localVariables) {
+        // propagate iteration variables down
+        finalHash.putAll(localVariables);
+      }
+    }
+    return new PartialCtx(parent, scopedModel, finalHash);
   }
 
   /**

@@ -10,6 +10,7 @@ import static org.apache.commons.lang3.Validate.notNull;
 import static org.apache.commons.lang3.Validate.validIndex;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -170,7 +171,13 @@ public enum StringHelpers implements Helper<Object> {
         return prefix + StringUtils.join((Iterator) context, (String) separator) + suffix;
       }
       if (context.getClass().isArray()) {
-        return prefix + StringUtils.join((Object[]) context, (String) separator) + suffix;
+        // arrays of primitives (int[], long[], ...) cannot be cast to Object[]
+        int length = Array.getLength(context);
+        Object[] items = new Object[length];
+        for (int i = 0; i < length; i++) {
+          items[i] = Array.get(context, i);
+        }
+        return prefix + StringUtils.join(items, (String) separator) + suffix;
       }
       // join everything as single values
       Object[] values = new Object[options.params.length];
@@ -585,20 +592,23 @@ public enum StringHelpers implements Helper<Object> {
    *   <li>"pattern": a {@link java.text.DecimalFormat} pattern, e.g. "#,###.00"
    * </ul>
    *
-   * If not specified, the default number format will be used.
-   * The format option can be specified either as a positional parameter or as a named hash parameter.
+   * If not specified, the default number format will be used. The format option can be specified
+   * either as a positional parameter or as a named hash parameter.
    *
    * <p>Additional options:
    *
    * <ul>
-   *   <li><strong>locale</strong>: the locale to use, e.g. "en_US" or "fr". Defaults to the system locale.
-   *   <li><strong>groupingUsed</strong>: whether grouping (e.g. thousands separators) should be used.
+   *   <li><strong>locale</strong>: the locale to use, e.g. "en_US" or "fr". Defaults to the system
+   *       locale.
+   *   <li><strong>groupingUsed</strong>: whether grouping (e.g. thousands separators) should be
+   *       used.
    *   <li><strong>maximumFractionDigits</strong>: maximum number of digits in the fractional part.
    *   <li><strong>maximumIntegerDigits</strong>: maximum number of digits in the integer part.
    *   <li><strong>minimumFractionDigits</strong>: minimum number of digits in the fractional part.
    *   <li><strong>minimumIntegerDigits</strong>: minimum number of digits in the integer part.
    *   <li><strong>parseIntegerOnly</strong>: whether numbers should be parsed as integers only.
-   *   <li><strong>roundingMode</strong>: the {@link java.math.RoundingMode} to apply, e.g. "HALF_UP".
+   *   <li><strong>roundingMode</strong>: the {@link java.math.RoundingMode} to apply, e.g.
+   *       "HALF_UP".
    * </ul>
    *
    * @see NumberFormat
